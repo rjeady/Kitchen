@@ -25,12 +25,13 @@ namespace KitchenTesting
             broker.Publish(new Message<int>(5));
             Console.WriteLine(broker.Unsubscribe<Message<int>>(HandleIntMsg));
             broker.Publish(new Message<int>(25));
+           
             Console.ReadLine();
         }
 
         private static void HandleIntMsg(Message<int> m)
         {
-            Console.WriteLine("message said {0}", m.Data);
+            // Console.WriteLine("message said {0}", m.Data);
         }
     }
 

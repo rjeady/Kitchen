@@ -53,9 +53,9 @@ namespace Kitchen.Messages
             Contract.Requires(handler != null);
 
             // can create a strong handler for static methods (where the handler target is null).
-            if (subcribeWeakly && handler.Target != null) 
-            { 
-                Type subscriberType = handler.Method.DeclaringType;
+            if (subcribeWeakly && handler.Target != null)
+            {
+                Type subscriberType = handler.Target.GetType();
                 var weakHandler = MessageBrokerHelper<TMessage>.GetWeakHandler(subscriberType, handler);
                 AddHandler(weakHandler);
             }
@@ -140,6 +140,7 @@ namespace Kitchen.Messages
             }
 
             private static IMessageHandler<TMessage> GetWeakHandlerInternal<TSubscriber>(MessageHandler<TMessage> handler)
+                where TSubscriber : class
             {
                 return new WeakMessageHandler<TSubscriber, TMessage>(handler);
             }
