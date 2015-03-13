@@ -2,42 +2,50 @@ using System;
 
 namespace Kitchen.Messages
 {
-    internal class WeakMessageHandler<TSubscriber, TMessage> : IMessageHandler<TMessage> where TMessage : Message
+    internal class WeakMessageHandler<TSubscriber, TMessage> : IMessageHandler<TMessage>
+        where TMessage : Message
+        where TSubscriber : class
     {
-        private readonly WeakReference targetRef;
+        private readonly WeakReference<TSubscriber> weakRef;
         private readonly Action<TSubscriber, TMessage> openHandler;
 
         private static readonly Type HandlerType = typeof(Action<TSubscriber, TMessage>);
 
         public WeakMessageHandler(MessageHandler<TMessage> handler)
         {
-            targetRef = new WeakReference(handler.Target);
+            weakRef = new WeakReference<TSubscriber>((TSubscriber)handler.Target);
             openHandler = (Action<TSubscriber, TMessage>)Delegate.CreateDelegate(HandlerType, handler.Method);
         }
 
-        /// <summary>
-        /// Determines whether this WeakMessageHandler wraps the given message handler delegate,
-        /// i.e. if it was constructed from this handler delegate.
-        /// </summary>
-        /// <param name="handler">The handler.</param>
+        private TSubscriber Target
+        {
+            get
+            {
+                TSubscriber target;
+                weakRef.TryGetTarget(out target);
+                return target;
+            }
+        }
+
         public bool HandlerIs(MessageHandler<TMessage> handler)
         {
-            return openHandler.Method == handler.Method && targetRef.Target == handler.Target;
+            return openHandler.Method == handler.Method && Target == handler.Target;
         }
+
         public bool SubscriberIs(object subscriber)
         {
-            return ReferenceEquals(targetRef.Target, subscriber);
+            return ReferenceEquals(Target, subscriber);
         }
 
         public bool Invoke(TMessage m)
         {
-            var target = (TSubscriber)targetRef.Target;
-
-            if (target == null)
-                return false;
-
-            openHandler(target, m);
-            return true;
+            TSubscriber target;
+            if (weakRef.TryGetTarget(out target))
+            {
+                openHandler(target, m);
+                return true;
+            }
+            return false;
         }
     }
 }
