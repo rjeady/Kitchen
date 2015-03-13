@@ -1,7 +1,4 @@
-﻿using System;
-using Kitchen.Events;
-
-namespace Kitchen.Settings
+﻿namespace Kitchen.Settings
 {
     public abstract class SettingsGroupBase { }
 

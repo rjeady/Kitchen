@@ -2,13 +2,7 @@ using System.Collections.Generic;
 
 namespace Kitchen.Messages
 {
-    internal interface IMessageHandlerSet
-    {
-        void Invoke(Message m);
-        int RemoveAllHandlers(object subscriber);
-    }
-
-    class MessageHandlerSet<TMessage> : IMessageHandlerSet where TMessage : Message
+    internal class MessageHandlerSet<TMessage> : IMessageHandlerSet where TMessage : Message
     {
         private readonly List<IMessageHandler<TMessage>> handlers = new List<IMessageHandler<TMessage>>();
 

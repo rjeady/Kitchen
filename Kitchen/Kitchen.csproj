@@ -56,9 +56,9 @@
     <Compile Include="IO\XElementExtensions.cs" />
     <Compile Include="Messages\IMessageBroker.cs" />
     <Compile Include="Messages\IMessageHandler.cs" />
+    <Compile Include="Messages\IMessageHandlerSet.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MessageBroker.cs" />
-    <Compile Include="Messages\MessageHandler.cs" />
     <Compile Include="Messages\SourcedMessage.cs" />
     <Compile Include="Messages\StrongMessageHandler.cs" />
     <Compile Include="Messages\WeakMessageHandler.cs" />
