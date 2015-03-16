@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
@@ -8,8 +9,10 @@ namespace Kitchen.Messages
 {
     public class MessageBroker : IMessageBroker
     {
-        private readonly Dictionary<Type, IMessageHandlerSet> handlers = new Dictionary<Type, IMessageHandlerSet>();
         private static readonly Type MessageBaseType = typeof(object);
+
+        private readonly ConcurrentDictionary<Type, IMessageHandlerSet> handlers
+            = new ConcurrentDictionary<Type, IMessageHandlerSet>();
 
         private readonly bool publishParentMessages;
 
@@ -92,11 +95,18 @@ namespace Kitchen.Messages
 
         private void AddHandler<TMessage>(IMessageHandler<TMessage> handler) where TMessage : Message
         {
-            var handlerSet = GetHandlerSet<TMessage>();
-            if (handlerSet == null)
+            MessageHandlerSet<TMessage> handlerSet;
+
+            // We try to get the required handler set from the dictionary, and if there isn't one, create it.
+            // This involves two operations on the dictionary which must be made atomic, so we need our own lock here.
+            lock (handlers)
             {
-                handlerSet = new MessageHandlerSet<TMessage>();
-                handlers[MessageBrokerHelper<TMessage>.MessageType] = handlerSet;
+                handlerSet = GetHandlerSet<TMessage>();
+                if (handlerSet == null)
+                {
+                    handlerSet = new MessageHandlerSet<TMessage>();
+                    handlers[MessageBrokerHelper<TMessage>.MessageType] = handlerSet;
+                }
             }
             handlerSet.Add(handler);
         }
@@ -130,12 +140,14 @@ namespace Kitchen.Messages
             public static IMessageHandler<TMessage> GetWeakHandler(Type subscriberType, MessageHandler<TMessage> handler)
             {
                 MethodInfo genericMethod;
-                if (!weakHandlerGetters.TryGetValue(subscriberType, out genericMethod))
+                lock (weakHandlerGetters)
                 {
-                    genericMethod = weakHandlerGetter.MakeGenericMethod(subscriberType);
-                    weakHandlerGetters[subscriberType] = genericMethod;
+                    if (!weakHandlerGetters.TryGetValue(subscriberType, out genericMethod))
+                    {
+                        genericMethod = weakHandlerGetter.MakeGenericMethod(subscriberType);
+                        weakHandlerGetters[subscriberType] = genericMethod;
+                    }
                 }
-                
                 return (IMessageHandler<TMessage>)genericMethod.Invoke(null, new object[] { handler });
             }
 

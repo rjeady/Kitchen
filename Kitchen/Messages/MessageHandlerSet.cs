@@ -5,25 +5,36 @@ namespace Kitchen.Messages
     internal class MessageHandlerSet<TMessage> : IMessageHandlerSet where TMessage : Message
     {
         private readonly List<IMessageHandler<TMessage>> handlers = new List<IMessageHandler<TMessage>>();
+        private readonly object listLock = new object();
+
 
         public void Add(IMessageHandler<TMessage> handler)
         {
-            handlers.Add(handler);
+            lock (listLock)
+            {
+                handlers.Add(handler);
+            }
         }
 
         private void Remove(IMessageHandler<TMessage> handler)
         {
-            handlers.Remove(handler);
+            lock (listLock)
+            {
+                handlers.Remove(handler);
+            }
         }
 
         public bool RemoveHandler(MessageHandler<TMessage> handler)
         {
-            for (int i = 0; i < handlers.Count; i++)
+            lock (listLock)
             {
-                if (handlers[i].HandlerIs(handler))
+                for (int i = 0; i < handlers.Count; i++)
                 {
-                    handlers.RemoveAt(i);
-                    return true;
+                    if (handlers[i].HandlerIs(handler))
+                    {
+                        handlers.RemoveAt(i);
+                        return true;
+                    }
                 }
             }
             return false;
@@ -31,15 +42,21 @@ namespace Kitchen.Messages
 
         public int RemoveAllHandlers(object subscriber)
         {
-            return handlers.RemoveAll(h => h.SubscriberIs(subscriber));
+            lock (listLock)
+            {
+                return handlers.RemoveAll(h => h.SubscriberIs(subscriber));
+            }
         }
 
         public void Invoke(Message m)
         {
-            foreach (var handler in handlers)
+            lock (listLock)
             {
-                if (!handler.Invoke((TMessage)m))
-                    Remove(handler);
+                foreach (var handler in handlers)
+                {
+                    if (!handler.Invoke((TMessage)m))
+                        Remove(handler);
+                }
             }
         }
     }

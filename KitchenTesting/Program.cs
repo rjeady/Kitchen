@@ -9,7 +9,7 @@ namespace KitchenTesting
     {
         static void Main(string[] args)
         {
-            var test2 = new Test2();
+            // var test2 = new Test2();
 
             var testClass = new TestClass(true);
             var testClass2 = new TestClass(false);
