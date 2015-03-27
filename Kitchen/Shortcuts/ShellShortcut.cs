@@ -138,7 +138,8 @@ namespace Kitchen.Shortcuts
 
                 var sb = new StringBuilder(MAX_PATH);
 
-                m_Link.GetPath(sb, sb.Capacity, out wfd, SLGP_FLAGS.SLGP_UNCPRIORITY);
+                m_Link.GetPath(sb, sb.Capacity, out wfd, SLGP_FLAGS.SLGP_RAWPATH);
+                
                 return sb.ToString();
             }
             set { m_Link.SetPath(value); }
@@ -196,7 +197,27 @@ namespace Kitchen.Shortcuts
 
                 // an empty iconPath means the shortcut has no custom icon set, so substitute the target's default icon.
                 if (iconPath == string.Empty)
-                    return Icon.ExtractAssociatedIcon(TargetPath);
+                {
+                    // cache property to avoid repeated pinvoke calls
+                    string target = TargetPath;
+
+                    if (target == string.Empty)
+                        return null;
+
+                    try
+                    {
+                        return Icon.ExtractAssociatedIcon(target);
+                    }
+                    catch (IOException)
+                    {
+                        // if the target file couldn't be found, return nothing.
+                        return null;
+                    }
+                    catch (ArgumentException)
+                    {
+                        return null;
+                    }
+                }
 
                 IntPtr hIcon = NativeMethods.ExtractIcon(IntPtr.Zero, iconPath, iconIndex);
                 if (hIcon == IntPtr.Zero)

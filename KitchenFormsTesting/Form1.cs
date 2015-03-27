@@ -10,7 +10,7 @@ namespace KitchenFormsTesting
         {
             InitializeComponent();
 
-            var shortcut = new ShellShortcut(@"C:\Users\Robert\Desktop\Audacity.lnk");
+            var shortcut = new ShellShortcut(@"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Wolfram Mathematica\Wolfram Mathematica 10.lnk");
             iconPictureBox.Image = shortcut.Icon.ToBitmap();
 
         }
