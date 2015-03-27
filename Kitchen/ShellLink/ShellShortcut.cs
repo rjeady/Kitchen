@@ -43,7 +43,7 @@ namespace Kitchen.ShellLink
         private const int SW_SHOWMINNOACTIVE = 7;
 
         private IShellLink m_Link;
-        private string m_sPath;
+        private readonly string m_sPath;
 
         ///
         /// <param name='linkPath'>
@@ -156,7 +156,7 @@ namespace Kitchen.ShellLink
             {
                 string iconPath;
                 int iconIndex;
-                GetIcon(out iconPath, out iconIndex);
+                GetIconLocation(out iconPath, out iconIndex);
                 return iconPath;
             }
             set { m_Link.SetIconLocation(value, IconIndex); }
@@ -175,7 +175,7 @@ namespace Kitchen.ShellLink
             {
                 string iconPath;
                 int iconIndex;
-                GetIcon(out iconPath, out iconIndex);
+                GetIconLocation(out iconPath, out iconIndex);
                 return iconIndex;
             }
             set { m_Link.SetIconLocation(IconPath, value); }
@@ -192,7 +192,7 @@ namespace Kitchen.ShellLink
             {
                 string iconPath;
                 int iconIndex;
-                GetIcon(out iconPath, out iconIndex);
+                GetIconLocation(out iconPath, out iconIndex);
 
                 // an empty iconPath means the shortcut has no custom icon set, so substitute the target's default icon.
                 if (iconPath == string.Empty)
@@ -212,7 +212,7 @@ namespace Kitchen.ShellLink
             }
         }
 
-        private void GetIcon(out string iconPath, out int iconIndex)
+        private void GetIconLocation(out string iconPath, out int iconIndex)
         {
             StringBuilder iconPathSB = new StringBuilder(MAX_PATH);
             m_Link.GetIconLocation(iconPathSB, iconPathSB.Capacity, out iconIndex);

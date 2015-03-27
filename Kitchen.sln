@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kitchen", "Kitchen\Kitchen.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitchenTesting", "KitchenTesting\KitchenTesting.csproj", "{206D46CC-49A9-4CAE-B3D4-14A1FEB0404A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitchenFormsTesting", "KitchenFormsTesting\KitchenFormsTesting.csproj", "{0A46892B-4871-4530-B248-5B2DA7276D72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{206D46CC-49A9-4CAE-B3D4-14A1FEB0404A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{206D46CC-49A9-4CAE-B3D4-14A1FEB0404A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{206D46CC-49A9-4CAE-B3D4-14A1FEB0404A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A46892B-4871-4530-B248-5B2DA7276D72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A46892B-4871-4530-B248-5B2DA7276D72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A46892B-4871-4530-B248-5B2DA7276D72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A46892B-4871-4530-B248-5B2DA7276D72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
