@@ -1,4 +1,4 @@
-﻿namespace Kitchen.Settings
+﻿namespace Kitchen.SettingsOld
 {
     public abstract class SettingsGroupBase { }
 

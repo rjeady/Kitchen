@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using Kitchen.IO;
 
-namespace Kitchen.Settings
+namespace Kitchen.SettingsOld
 {
 	public class XmlSettingsRepository : ISettingsRepository
 	{

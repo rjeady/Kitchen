@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kitchen.Settings
+namespace Kitchen.SettingsOld
 {
 	public class StringSetting : Setting<string>
 	{

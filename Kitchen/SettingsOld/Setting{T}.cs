@@ -1,7 +1,7 @@
 ﻿using System;
 using Kitchen.Events;
 
-namespace Kitchen.Settings
+namespace Kitchen.SettingsOld
 {
     public abstract class Setting<T> : ISetting
         where T : IEquatable<T>

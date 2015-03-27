@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kitchen.Settings
+namespace Kitchen.SettingsOld
 {
     public class SettingChangedEventArgs<T> : EventArgs where T : IEquatable<T>
     {

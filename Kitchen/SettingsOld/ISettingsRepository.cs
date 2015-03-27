@@ -1,5 +1,5 @@
 
-namespace Kitchen.Settings
+namespace Kitchen.SettingsOld
 {
 	public interface ISettingsRepository
 	{
