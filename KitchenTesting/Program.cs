@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Kitchen;
 using Kitchen.Messages;
+using Kitchen.ShellLink;
 
 namespace KitchenTesting
 {
@@ -9,16 +10,29 @@ namespace KitchenTesting
     {
         static void Main(string[] args)
         {
+            // icon testing
+            var it = new IconTest();
+
+
             // var test2 = new Test2();
 
-            var testClass = new TestClass(true);
-            var testClass2 = new TestClass(false);
+            var testClass = new MessagingTestClass(true);
+            var testClass2 = new MessagingTestClass(false);
         }
     }
 
-    class Test2
+    internal class IconTest
     {
-        public Test2()
+        public IconTest()
+        {
+            var shortcut = new ShellShortcut(@"C:\Users\Robert\Desktop\chap6.pdf - Shortcut.lnk");
+            Console.WriteLine("Shortcut icon path: {0}, icon index: {1}", shortcut.IconPath, shortcut.IconIndex);
+        }
+    }
+
+    class MessagingTestClass2
+    {
+        public MessagingTestClass2()
         {
             var broker = new MessageBroker();
             broker.Subscribe<Message<int>>(HandleIntMsg, true);
@@ -35,9 +49,9 @@ namespace KitchenTesting
         }
     }
 
-    class TestClass
+    class MessagingTestClass
     {
-        public TestClass(bool weak)
+        public MessagingTestClass(bool weak)
         {
             var broker = new MessageBroker(true);
             var sw = new Stopwatch();
