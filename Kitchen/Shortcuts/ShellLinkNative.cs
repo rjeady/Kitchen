@@ -20,10 +20,10 @@
 
 using System;
 using System.Runtime.InteropServices;
-using ComTypes = System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using ComTypes = System.Runtime.InteropServices.ComTypes;
 
-namespace Kitchen.ShellLink
+namespace Kitchen.Shortcuts
 {
     // IShellLink.Resolve fFlags
     [Flags]

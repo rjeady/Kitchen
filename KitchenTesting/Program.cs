@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Kitchen;
 using Kitchen.Messages;
-using Kitchen.ShellLink;
+using Kitchen.Shortcuts;
 
 namespace KitchenTesting
 {

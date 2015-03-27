@@ -75,8 +75,9 @@
     <Compile Include="SettingsOld\SettingTypes.cs" />
     <Compile Include="SettingsOld\Setting{T}.cs" />
     <Compile Include="SettingsOld\XmlSettingsRepository.cs" />
-    <Compile Include="ShellLink\ShellLinkNative.cs" />
-    <Compile Include="ShellLink\ShellShortcut.cs" />
+    <Compile Include="Shortcuts\MsiShortcutUtils.cs" />
+    <Compile Include="Shortcuts\ShellLinkNative.cs" />
+    <Compile Include="Shortcuts\ShellShortcut.cs" />
     <Compile Include="StopwatchExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

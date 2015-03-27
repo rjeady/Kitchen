@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Kitchen.ShellLink
+namespace Kitchen.Shortcuts
 {
     /// <summary>
     ///   .NET friendly wrapper for the ShellLink class
