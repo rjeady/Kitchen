@@ -45,6 +45,11 @@ namespace Kitchen.Shortcuts
         private IShellLink m_Link;
         private readonly string m_sPath;
 
+        // are we a 32 bit proceess on 64 bit windows?
+        private readonly bool wow64 = !Environment.Is64BitProcess && Environment.Is64BitOperatingSystem;
+        private readonly string x86ProgramFilesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+        private readonly string x64ProgramFilesPath = Environment.GetEnvironmentVariable("ProgramW6432");
+
         ///
         /// <param name='linkPath'>
         ///   Path to new or existing shortcut file (.lnk).
@@ -135,12 +140,22 @@ namespace Kitchen.Shortcuts
             get
             {
                 WIN32_FIND_DATAW wfd;
-
                 var sb = new StringBuilder(MAX_PATH);
-
                 m_Link.GetPath(sb, sb.Capacity, out wfd, SLGP_FLAGS.SLGP_RAWPATH);
-                
-                return sb.ToString();
+                string targetPath = sb.ToString();
+
+                // if we're a 32 bit process on 64 bit windows, paths to 64 bit programs will be incorrectly reported
+                // as being under Program Files (x86). Workaround follows.
+                if (wow64 && targetPath.StartsWith(x86ProgramFilesPath) && !File.Exists(targetPath))
+                {
+                    string x64Path = targetPath.Replace(x86ProgramFilesPath, x64ProgramFilesPath);
+                    if (File.Exists(x64Path))
+                    {
+                        return x64Path;
+                    }
+                }
+
+                return targetPath;
             }
             set { m_Link.SetPath(value); }
         }
